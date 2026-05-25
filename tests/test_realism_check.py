@@ -1,5 +1,5 @@
 import pytest
-from variables.GEN_III_node_amplifiers import get_realistic_exergy_yield
+from variables.GEN_III_node_amplifiers import get_optimized_realistic_yield
 
 def test_ledger_integrity():
     """
