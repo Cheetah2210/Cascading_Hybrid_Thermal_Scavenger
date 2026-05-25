@@ -1,11 +1,17 @@
 class CHTSController:
+    """
+    HIL-Ready Controller: Dynamically computes cascaded exergy extraction 
+    using live sensor telemetry.
+    """
     def __init__(self, max_capacity=200.0, discharge_threshold=50.0):
         self.max_capacity = max_capacity
         self.discharge_threshold = discharge_threshold
-        self.temps = {"T_source": 500, "T_sink": 300}
 
-    def compute_optimized_output(self, input_thermal_kw):
-        # 1. Determine Operational State
+    def compute_optimized_output(self, input_thermal_kw, live_temps):
+        """
+        Processes load based on live sensor data (T_hot, T_cold).
+        """
+        # Determine operational status
         if input_thermal_kw > self.max_capacity:
             status = "SATURATED"
         elif input_thermal_kw < self.discharge_threshold:
@@ -13,10 +19,11 @@ class CHTSController:
         else:
             status = "OPTIMAL"
             
-        # 2. Physics-based cascaded recovery calculation
-        remaining_heat = min(input_thermal_kw, self.max_capacity)
-        carnot = 1 - (300 / 500)
+        # Dynamic Carnot calculation
+        carnot = max(0, 1 - (live_temps['T_cold'] / live_temps['T_hot']))
         
+        # Cascaded Enthalpy Reduction
+        remaining_heat = min(input_thermal_kw, self.max_capacity)
         stages = {"teg_high": 0.35, "teg_low": 0.30, "zeo": 0.20, "ads": 0.15}
         
         outputs = {}
