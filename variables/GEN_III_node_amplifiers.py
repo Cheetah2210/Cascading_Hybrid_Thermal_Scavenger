@@ -1,35 +1,34 @@
 """
-Gen III Global Cascade Aggregator - Granular Physics Edition
-This module calculates the optimized exergy yield by applying granular
-physical remediation factors to the baseline 46.8% realistic yield.
+Gen III Global Cascade Aggregator - Fail-Safe Edition
+This module includes conditional logic to bypass the MHD stage if 
+ionization thresholds are not met, maintaining overall system viability.
 """
 
 def get_optimized_realistic_yield(gross_input_kw: float, phys_vars: dict) -> dict:
-    """
-    Calculates yield based on granular physical variables.
+    # 1. Ionization Threshold Check
+    # If the MHD stage doesn't meet the conductivity threshold, we bypass power extraction
+    # and strictly perform thermal scavenging (TEG + Zeotropic).
+    is_mhd_stable = phys_vars.get('mhd_ionization_stable', True)
     
-    Expected keys in phys_vars:
-    - slip_factor (float): Gain from Graphene boundary layer coating
-    - ehd_freq_boost (float): Gain from EHD phase boundary acceleration
-    - halbach_flux_gain (float): Gain from Halbach magnetic array optimization
-    - zt_coefficient (float): Seebeck figure of merit for Stage 2 TEGs
-    """
-    
-    # 1. Baseline realistic net yield (46.8% of gross input)
+    if not is_mhd_stable:
+        # Fallback to thermal-only recovery (approx 22% of total exergy)
+        net_output = gross_input_kw * 0.22
+        return {
+            "optimized_net_kw": round(net_output, 3),
+            "status": "MHD_BYPASS_ENGAGED_THERMAL_ONLY",
+            "efficiency_gain_delta": 0.0
+        }
+
+    # 2. Baseline realistic net yield (46.8% of gross input)
     base_net = gross_input_kw * 0.468
     
-    # 2. Calculate cumulative gain from physical remediation
-    # Remediation of Hartmann drag and boundary friction
+    # 3. Calculate cumulative gain
     total_gain = (phys_vars.get('slip_factor', 0.0) + 
                   phys_vars.get('ehd_freq_boost', 0.0) + 
                   phys_vars.get('halbach_flux_gain', 0.0))
     
-    # 3. Apply TEG efficiency coefficient
-    # ZT coefficient directly scales the recovered energy
-    teg_multiplier = phys_vars.get('zt_coefficient', 1.0)
-    
     # 4. Final Adjusted Output
-    # Result = (Baseline * Gain_Multiplier) * TEG_Efficiency
+    teg_multiplier = phys_vars.get('zt_coefficient', 1.0)
     optimized_output = base_net * (1 + total_gain) * teg_multiplier
     
     return {
