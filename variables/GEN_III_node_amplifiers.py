@@ -1,4 +1,5 @@
 import numpy as np
+import hashlib
 
 class CHTSController:
     """
@@ -6,17 +7,17 @@ class CHTSController:
     
     Architecture:
     - Serial Enthalpy Cascade: Each stage processes residual heat.
-    - Deterministic Uncertainty: Seeded RNG ensures reproducible σ values.
+    - Input-Deterministic Uncertainty: Seed derived from input load hashing 
+      to ensure stateless, repeatable sigma values.
     """
     def __init__(self, max_capacity=200.0, discharge_threshold=50.0):
         self.max_capacity = max_capacity
         self.discharge_threshold = discharge_threshold
         self.baseline_temps = {'T_hot': 500, 'T_cold': 300}
-        # Fixed seed ensures reproducible validation results across all environments
-        self.rng = np.random.default_rng(seed=42)
 
     def compute_optimized_output(self, input_thermal_kw, live_temps=None):
-        """Calculates energy recovery with deterministic statistical modeling."""
+        """Calculates energy recovery with input-deterministic modeling."""
+        # Determine operational state
         if input_thermal_kw > self.max_capacity:
             status = "SATURATED"
         elif input_thermal_kw < self.discharge_threshold:
@@ -38,9 +39,13 @@ class CHTSController:
             total_recovery += extracted
             current_heat -= extracted
             
-        # Deterministic Statistical Modeling
+        # Input-Deterministic Stochastic Modeling
+        # Hashing the load ensures the same input always produces the same 'random' noise
+        seed = int(hashlib.md5(str(input_thermal_kw).encode()).hexdigest(), 16) % (2**32)
+        local_rng = np.random.default_rng(seed=seed)
+        
         base_error = 0.02 * total_recovery
-        stochastic_noise = self.rng.normal(0, 0.3) 
+        stochastic_noise = local_rng.normal(0, 0.3) 
         modeled_sigma = round(np.sqrt(base_error**2 + stochastic_noise**2), 3)
         
         return {
