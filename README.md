@@ -78,3 +78,41 @@ To achieve a verifiable **46.8% total system efficiency**, the updated simulatio
 
 ### 2. Downstream Exergy Compounding
 * **Thermoelectric Core Integration:** Operates entirely on the high-temperature thermal energy rejected by the Stage 1 fluid channel ($7.58\text{ kW}$ residual
+
+---
+
+The-Cascading-Hybrid-Thermal-Scavenger/
+│
+├── .github/
+│   └── workflows/
+│       └── python-test.yml         # CI/CD automated validation for physics engines
+│
+├── docs/                           # Comprehensive engineering documentation
+│   ├── images/                     # Schematics, fluid profiles, and charts
+│   ├── APPLICATIONS.md             # Alternative industry scaling guides
+│   └── SIZING_GUIDE.md             # Boundary layer & static backpressure equations
+│
+├── hardware/                       # Open-Source Hardware CAD & Layout Files
+│   ├── mechanical/                 # Scavenger hood chassis & ceramic vane profiles (.STEP/.STL)
+│   └── electrical/                 # Electrode control & RF ionization circuit schematics
+│
+├── variables/                      # Core Physics & Simulation Engines
+│   ├── __init__.py
+│   ├── node_amplifiers.py          # Gen III Ultra optimization script
+│   ├── variable_theory.py          # Gen I base configuration models
+│   ├── variable_theory_2.py        # Gen II TPV resonance physics
+│   ├── variable_theory_3.py        # Gen III EHD phase boundary acceleration
+│   ├── variable_theory_testing.py  # Loss validation, Hartmann drag, & contact resistance
+│   ├── teg_sandwich.py             # Stage 2 Thermoelectric core thermal modeling
+│   └── zeotropic_mix.py            # Stage 3 Antoine equation vapor glide models
+│
+├── tests/                          # Forensic verification and unit tests
+│   ├── __init__.py
+│   ├── test_mhd_core.py            # Validates RF overhead and fluid conductivity
+│   └── test_cascades.py            # Verifies total exergy return vs Second Law constraints
+│
+├── .gitignore                      # Excludes local virtual environments, pycache, and log dumps
+├── License.txt                     # Full text of the CERN Open Hardware Licence v1.2
+├── README.md                       # Master engineering brief and performance ledger
+├── requirements.txt                # Python dependency manifest (NumPy, SciPy, etc.)
+└── setup.py                        # Package configuration for local installation
