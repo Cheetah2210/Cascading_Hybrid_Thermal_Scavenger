@@ -15,19 +15,19 @@ def plot_performance_with_error(data, temps={'T_hot': 500, 'T_cold': 300}):
     
     plt.figure(figsize=(10, 6))
     
-    # Experimental Results
+    # Experimental Results (Deterministic Sigma)
     plt.errorbar(
         data['input_kw'], 
         data['total_output_kw'], 
         yerr=data['modeled_sigma'], 
         fmt='o', 
-        label='Measured Recovery ± σ'
+        label='Measured Recovery ± σ (Deterministic)'
     )
     
     # Independent Physics Ceiling
     plt.plot(data['input_kw'], theoretical_carnot_limit, 'r--', label='Theoretical Carnot Boundary')
     
-    plt.title("CHTS v3.14 Performance: Independent Forensic Boundary")
+    plt.title("CHTS v3.14 Performance: Reproducible Forensic Boundary")
     plt.xlabel("Input Thermal kW")
     plt.ylabel("Recovery kW")
     plt.legend()
@@ -35,4 +35,4 @@ def plot_performance_with_error(data, temps={'T_hot': 500, 'T_cold': 300}):
     plt.show()
 
 if __name__ == "__main__":
-    print("Visualization module using independent Carnot boundary derivation.")
+    print("Visualization module using reproducible deterministic sigma.")
