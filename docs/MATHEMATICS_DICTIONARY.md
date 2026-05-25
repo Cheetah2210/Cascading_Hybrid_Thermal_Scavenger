@@ -1,4 +1,4 @@
-# CHTS Mathematics Dictionary
+# CHTS MATHEMATICS DICTIONARY
 
 This dictionary defines the governing physical equations used within the CHTS simulation modules. 
 
