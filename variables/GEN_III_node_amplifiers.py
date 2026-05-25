@@ -17,7 +17,6 @@ class CHTSController:
 
     def compute_optimized_output(self, input_thermal_kw, live_temps=None):
         """Calculates energy recovery with input-deterministic modeling."""
-        # Determine operational state
         if input_thermal_kw > self.max_capacity:
             status = "SATURATED"
         elif input_thermal_kw < self.discharge_threshold:
