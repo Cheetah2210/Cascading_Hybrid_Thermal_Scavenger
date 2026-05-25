@@ -1,44 +1,51 @@
-import numpy as np
+"""
+TEG Sandwich Efficiency Model
+Calculates thermoelectric power output while enforcing contact resistance 
+and thermal interface limitations.
+"""
 
-def simulate_teg_core(residual_flux_kw, t_hot_node=1200.0, t_cold_node=600.0):
+def simulate_teg_core(heat_flux_kw: float, t_hot: float, t_cold: float) -> dict:
     """
-    Models Stage 2 Thermoelectric Generator (TEG) performance architecture.
-    Accounts for contact resistance degradation and internal Joule heating loops.
+    Simulates the performance of the Stage 2 TEG sandwich.
     
     Parameters:
-      residual_flux_kw (float): Thermal energy entering Stage 2 in kW (Target: 7.58)
-      t_hot_node (float): Hot-side wetted interface temperature in Kelvin (Default: 1200.0)
-      t_cold_node (float): Cold-side rejection interface temperature in Kelvin (Default: 600.0)
-      
-    Returns:
-      dict: Performance metrics for the TEG sandwich.
-    """
-    if residual_flux_kw <= 0:
-        raise ValueError("Residual flux entering TEG core must be positive.")
-    if t_hot_node <= t_cold_node:
-        raise ValueError("Hot-side temperature must be strictly greater than cold-side temperature.")
-
-    # Target constraints matching the Realized Cascade Performance Matrix
-    contact_resistance_ohms = 1.5e-4  # 0.15 mΩ laser-textured threshold
-    teg_ideal_limit_eff = 20.0
-    teg_realistic_net_eff = 15.5      # Bounded by Joule loops and contact resistance
+    - heat_flux_kw: Residual thermal energy (kW) from Stage 1.
+    - t_hot: Hot side temperature (K).
+    - t_cold: Cold side temperature (K).
     
-    # Calculate electrical output based on realistic constraint logic
-    # If parameters match design spec precisely, return exactly the 1.17 kW matrix ledger value
-    if np.isclose(residual_flux_kw, 7.58) and np.isclose(t_hot_node, 1200.0):
-        net_teg_output_kw = 1.17
-    else:
-        # Dynamic behavior loop for multi-point testing runs
-        efficiency_factor = (teg_realistic_net_eff / 100.0) * (1.0 - (contact_resistance_ohms * 10.0))
-        net_teg_output_kw = residual_flux_kw * efficiency_factor
-
-    # Calculate remaining energy rejected down to Stage 3
-    rejected_flux_kw = residual_flux_kw - net_teg_output_kw
-
+    Returns:
+    - net_teg_output_kw: Calculated power generated (kW).
+    - rejected_flux_kw: Remaining thermal energy passed to Stage 3.
+    """
+    
+    # 1. Constants and Constraints
+    # Contact resistance enforced at 0.15 mOhm (0.00015 Ohms)
+    contact_resistance_ohm = 0.00015
+    
+    # 2. Temperature Gradient
+    delta_t = t_hot - t_cold
+    if delta_t <= 0:
+        return {"net_teg_output_kw": 0.0, "rejected_flux_kw": heat_flux_kw}
+    
+    # 3. Seebeck Efficiency Calculation
+    # Theoretical Carnot efficiency limit
+    carnot_eff = delta_t / t_hot
+    
+    # Realistic TEG efficiency factor (Module performance * Contact loss penalty)
+    # Contact resistance effectively shunts a portion of generated current
+    contact_loss_factor = 1.0 / (1.0 + (contact_resistance_ohm * 100))
+    module_efficiency = 0.20 * carnot_eff * contact_loss_factor
+    
+    # 4. Energy Conversion
+    net_teg_output_kw = heat_flux_kw * module_efficiency
+    rejected_flux_kw = heat_flux_kw - net_teg_output_kw
+    
     return {
-        "ideal_efficiency_limit": teg_ideal_limit_eff,
-        "realistic_net_efficiency": teg_realistic_net_eff,
-        "contact_resistance_ohms": contact_resistance_ohms,
-        "net_teg_output_kw": net_teg_output_kw,
-        "rejected_flux_kw": rejected_flux_kw
+        "net_teg_output_kw": round(net_teg_output_kw, 4),
+        "rejected_flux_kw": round(rejected_flux_kw, 4),
+        "efficiency_achieved": round(module_efficiency * 100, 2),
+        "status": "TEG_CORE_STABLE"
     }
+
+# Example validation check
+# print(simulate_teg_core(5.0, 350, 300))
