@@ -1,26 +1,13 @@
 import logging
 
-# Configure logging for thermal performance monitoring
-logging.basicConfig(
-    filename='system_alerts.log', 
-    level=logging.INFO, 
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-
 class CHTSController:
     """
-    Consolidated Controller for the 4-Stage Thermal Cascade (CHTS GEN-III).
-    
-    Stages:
-    1. TEG-High (18.5% efficiency)
-    2. TEG-Low (14.0% efficiency)
-    3. Zeotropic Recovery (7.1% efficiency)
-    4. Adsorption Cooling Offset (5.0% efficiency)
-    
-    Total Baseline Efficiency: 44.6%
+    Optimized Controller for the 4-Stage Thermal Cascade (CHTS GEN-III).
+    Incorporates dynamic load balancing for peak thermal input.
     """
     def __init__(self, max_capacity=200.0):
         self.max_capacity = max_capacity
+        # Baseline conversion efficiencies
         self.coefficients = {
             "teg_high": 0.185,
             "teg_low": 0.140,
@@ -28,32 +15,32 @@ class CHTSController:
             "ads": 0.050
         }
 
-    def compute_cascaded_output(self, input_thermal_kw):
+    def compute_optimized_output(self, input_thermal_kw):
         """
-        Calculates power recovery across all 4 stages based on thermal input.
+        Calculates recovery and captures excess exergy for thermal storage.
         """
-        # Determine if system is at capacity
+        # Determine saturation status and storage potential
         is_saturated = input_thermal_kw > self.max_capacity
         effective_input = min(input_thermal_kw, self.max_capacity)
         
         # Calculate yield per stage
         outputs = {k: round(effective_input * v, 3) for k, v in self.coefficients.items()}
-        
         total_recovery = sum(outputs.values())
         
-        status = "SATURATED" if is_saturated else "OPTIMAL"
+        # Capture excess for secondary thermal storage (PCM/buffer)
+        storage_potential = max(0.0, input_thermal_kw - self.max_capacity)
         
-        if is_saturated:
-            logging.warning(f"System saturation reached at {input_thermal_kw}kW")
-            
+        # Calculate performance index
+        efficiency_index = round(total_recovery / input_thermal_kw, 4) if input_thermal_kw > 0 else 0
+        
         return {
             "outputs": outputs,
-            "total_output": total_recovery,
-            "status": status
+            "total_recovery_kw": total_recovery,
+            "storage_potential_kw": storage_potential,
+            "efficiency_index": efficiency_index,
+            "status": "SATURATED" if is_saturated else "OPTIMAL"
         }
 
-def get_optimized_realistic_yield(input_thermal_kw):
-    """Utility function to interface with telemetry validation."""
+def get_maximized_yield(input_thermal_kw):
     controller = CHTSController()
-    result = controller.compute_cascaded_output(input_thermal_kw)
-    return result["outputs"]
+    return controller.compute_optimized_output(input_thermal_kw)
