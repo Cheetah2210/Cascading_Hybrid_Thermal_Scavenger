@@ -58,7 +58,7 @@ def calculate_cascade(source_temp=1200.0, sink_temp=300.0):
     stage3 = calculate_zeotropic_glide(source_flux_kw=stage2['rejected_flux_kw'], t_inlet=600.0, t_sink=sink_temp)
     
     # Aggregate net direct electrical conversion yields
-    total_direct_engine_output_kw = mhd_output + stage2['net_power_loss_kw'] + stage3['net_zeotropic_output_kw']
+    total_direct_engine_output_kw = mhd_output + stage2['net_teg_output_kw'] + stage3['net_zeotropic_output_kw']
     
     # Global verified cascade efficiency (Physics-Constrained Ledger Target)
     validated_net_exergy_yield = 0.468
