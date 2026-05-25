@@ -1,6 +1,10 @@
 import numpy as np
 
+# 💡 Use a relative package import to explicitly bind the sibling module:
+from .teg_sandwich import simulate_teg_core
+
 def calculate_zeotropic_glide(source_flux_kw, t_inlet=600.0, t_sink=300.0):
+
     """
     Models the Stage 3 Zeotropic Phase Glide Loop utilizing multi-component
     fluid glides calculated via Antoine vapor pressure constraints.
