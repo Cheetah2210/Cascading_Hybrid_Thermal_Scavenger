@@ -1,6 +1,8 @@
 # Cascading Hybrid Thermal Scavenger (CHTS)
 
-A multi-stage, solid-state thermal recovery ecosystem designed to maximize exergy extraction from high-density data center exhaust, industrial flues, and space-based thermal buses.
+CHTS is a deterministic and reproducible framework for modeling serial enthalpy cascade thermal recovery. This repository provides a reproducible and internally validated environment for simulating thermal scavenge performance, verifying telemetry against thermodynamic constraints, and auditing recovery metrics.
+
+> **Current Release:** CHTS v1.0
 
 ---
 
@@ -11,7 +13,7 @@ Licensed under the [CERN Open Hardware Licence v1.2](./License.txt).
 ---
 
 ## 📖 Project Overview
-The **Cascading Hybrid Thermal Scavenger (CHTS)** addresses energy inefficiencies in high-density computing and industrial management. CHTS utilizes a decoupled, 4-stage solid-state cascading framework to capture waste heat without parasitic mechanical load.
+The **Cascading Hybrid Thermal Scavenger (CHTS)** addresses energy inefficiencies in high-density computing and industrial management. CHTS utilizes a decoupled, 4-stage solid-state cascading framework to capture waste heat with minimal parasitic overhead.
 
 ### The Innovation
 * **Stages 1 & 2 (High/Low TEG):** Solid-state Seebeck conversion modules capturing high and low-grade heat.
@@ -21,37 +23,55 @@ The **Cascading Hybrid Thermal Scavenger (CHTS)** addresses energy inefficiencie
 
 ---
 
+## 🧭 Project Status
+CHTS v1.0 represents a thermodynamically credible and reproducible modeled thermal recovery platform.
+
+* ✅ Controller and analytics internally validated
+* ✅ Reproducible ledger and telemetry pipeline
+* ✅ Sequential Carnot-limited cascade model
+* ⏳ Experimental hardware validation in development
+
+---
+
+## 🔬 Validation & Reproducibility
+CHTS includes reproducible controller outputs, telemetry QA validation, and ledger generation workflows designed to support auditability and thermodynamic traceability.
+
+**Core Workflow:** `controller` → `telemetry` → `validation` → `ledger` → `analytics`
+
+---
+
+## 📊 Modeled Thermal Recovery Envelope
+
+| Stage | Modeled Role | Governing Constraints |
+| :--- | :--- | :--- |
+| **High / Low TEG** | Primary solid-state heat recovery | Junction resistance & thermal gradient |
+| **Zeotropic Loop** | Residual latent heat recovery | Pressure losses & exchanger efficiency |
+| **Adsorption Cycle** | Cooling offset & low-grade recovery | Thermal inertia & mass transfer |
+| **Integrated System** | Sequential Carnot-limited cascade | Remaining enthalpy & operating conditions |
+
+**Current controller models ~25–30% aggregate thermal recovery under nominal operating conditions and temperature gradients.**
+
+*Results represent calibrated model predictions and reproducible software validation; experimental hardware validation remains future work.*
+
+---
+
 ## 📂 Repository Directory
 | Path | Description |
 | :--- | :--- |
 | [**.github/workflows/**](./.github/workflows/) | Validated CI/CD for Python 3.11+ thermal verification. |
-| [**docs/**](./docs/) | Hardware interface, 44.6% efficiency math, and **Space Adaptation**. |
-| [**hardware/**](./hardware/) | BOM, Solid-state signal conditioning, and mechanical tolerances. |
+| [**docs/**](./docs/) | Thermodynamic modeling methodology, validation protocols, and space-adaptation theory. |
+| [**hardware/**](./hardware/) | BOM, solid-state signal conditioning, and mechanical tolerances. |
 | [**variables/**](./variables/) | Controller logic and PCM Thermal Buffer management. |
+| [**analytics/**](./analytics/) | Recovery analysis, visualization, and provenance tooling. |
+| [**validation/**](./validation/) | Telemetry QA, ledger generation, and model validation artifacts. |
 | [**tests/**](./tests/) | Forensic thermodynamic unit tests and validation suites. |
 
 ---
 
 ## 🚀 Global & Strategic Impact
-* **Data Center Exergy Reclamation:** Reclaims exhaust heat to offset cooling infrastructure costs and auxiliary power loads.
-* **Industrial Decarbonization:** High-efficiency retrofitting for kilns and flues; reducing thermal overhead by 15-20%.
-* **Space & Aerospace:** Integrated thermal bus recovery for orbital compute, reducing the mass penalty of large radiator arrays.
-* **Distributed Grid Support:** Enabling sustainable micro-scale energy harvesting for remote infrastructure.
+* **Data Center Exergy Reclamation:** Modeled pathways to reclaim exhaust heat to offset cooling infrastructure costs.
+* **Industrial Decarbonization:** Modeled retrofit pathway for kilns and flues through staged thermal recovery.
+* **Space & Aerospace:** Conceptual thermal bus recovery architecture for orbital and constrained thermal systems with modeled potential to reduce radiator mass requirements.
+* **Distributed Grid Support:** Modeled pathways for micro-scale thermal energy harvesting in distributed and remote infrastructure.
 
 ---
-
-## 📊 Performance Matrix (Solid-State 4-Stage Cascade)
-
-| Phase Node | Target Efficiency | Realistic Net Yield | Governing Loss Factors |
-| :--- | :--- | :--- | :--- |
-| **Stage 1 & 2: TEG** | 32.5% | **32.5%** | Semiconductor junction resistance. |
-| **Stage 3: Zeotropic** | 7.1% | **7.1%** | Pressure drops & boundary friction. |
-| **Stage 4: Adsorption** | 5.0% | **5.0% (Offset)** | Bed thermal inertia & mass transfer. |
-| **Total System** | **44.6%** | **44.6%** | **Validated Net Exergy Yield** |
-
----
-
-## 🛠️ Implementation Requirements
-* [requirements.txt](./requirements.txt): Manifest for NumPy, SciPy, and automated validation tools.
-* [setup.py](./setup.py): Local production environment configuration.
-* [docs/SPACE_ADAPTATION.md](./docs/SPACE_ADAPTATION.md): Vacuum-rated engineering specifications for non-magnetic/solid-state thermal buses.
