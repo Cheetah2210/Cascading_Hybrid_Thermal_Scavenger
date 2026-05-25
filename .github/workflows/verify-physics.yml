@@ -21,6 +21,7 @@ jobs:
 
       - name: Run Physics Verification Tests
         env:
-          # CRITICAL: Ensures 'variables' module is importable
+          # CRITICAL: Forces Python to recognize the root as the import source
           PYTHONPATH: ${{ github.workspace }}
-        run: pytest tests/
+        run: |
+          pytest tests/
