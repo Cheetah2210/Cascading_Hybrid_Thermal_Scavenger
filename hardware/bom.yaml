@@ -35,19 +35,3 @@ bill_of_materials:
     unit: ea
     notes: ""
 
----
-
-graph TD
-
-A[CHTS-MP-01<br>Graphene Interface Sheet]
-B[CHTS-SS-02<br>Bismuth Telluride Arrays]
-C[CHTS-CH-03<br>1U Manifold Frame]
-D[CHTS-PC-04<br>Phase Change Plate]
-
-C --> A
-C --> B
-C --> D
-
-A -->|k ≥ 3000 W/m·K| SYS[CHTS Thermal System]
-B -->|Thermoelectric| SYS
-D -->|Tm = 42°C| SYS
