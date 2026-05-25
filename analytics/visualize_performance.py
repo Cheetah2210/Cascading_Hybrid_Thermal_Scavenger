@@ -1,24 +1,21 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from variables.GEN_III_node_amplifiers import CHTSController
 
-def plot_performance_with_error(data):
+def plot_performance_with_error(data, temps={'T_hot': 500, 'T_cold': 300}):
     """
-    Forensic analysis tool: Plots actual recovery against the 
-    controller's actual dynamic thermodynamic ceiling.
+    Forensic analysis tool: Plots actual recovery against 
+    an independently derived thermodynamic Carnot boundary.
     """
-    controller = CHTSController()
+    # Independent Thermodynamic Boundary
+    carnot_efficiency = 1 - (temps['T_cold'] / temps['T_hot'])
+    input_loads = np.array(data['input_kw'])
     
-    # Calculate dynamic theoretical ceiling by probing the controller's physics
-    # We use the baseline temp assumption to define the thermodynamic boundary
-    theoretical_limit = []
-    for load in data['input_kw']:
-        # The theoretical ceiling is the output if the system had 100% stage 
-        # utilization up to the Carnot limit.
-        res = controller.compute_optimized_output(load)
-        theoretical_limit.append(res['total_recovery_kw'] / 0.30) # Normalize back to potential
+    # Boundary: Theoretical limit based strictly on 2nd Law
+    theoretical_carnot_limit = input_loads * carnot_efficiency
     
     plt.figure(figsize=(10, 6))
+    
+    # Experimental Results
     plt.errorbar(
         data['input_kw'], 
         data['total_output_kw'], 
@@ -26,8 +23,11 @@ def plot_performance_with_error(data):
         fmt='o', 
         label='Measured Recovery ± σ'
     )
-    plt.plot(data['input_kw'], theoretical_limit, 'r--', label='Dynamic Thermodynamic Ceiling')
-    plt.title("CHTS v3.14 Performance vs. Dynamic Thermodynamic Boundary")
+    
+    # Independent Physics Ceiling
+    plt.plot(data['input_kw'], theoretical_carnot_limit, 'r--', label='Theoretical Carnot Boundary')
+    
+    plt.title("CHTS v3.14 Performance: Independent Forensic Boundary")
     plt.xlabel("Input Thermal kW")
     plt.ylabel("Recovery kW")
     plt.legend()
@@ -35,4 +35,4 @@ def plot_performance_with_error(data):
     plt.show()
 
 if __name__ == "__main__":
-    print("Visualization module using dynamic thermodynamic derivation.")
+    print("Visualization module using independent Carnot boundary derivation.")
