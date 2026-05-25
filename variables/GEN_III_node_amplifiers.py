@@ -36,9 +36,28 @@ class CHTSController:
             "status": "SATURATED" if is_saturated else "OPTIMAL"
         }
 
-def get_optimized_realistic_yield(input_thermal_kw):
+def get_optimized_realistic_yield(input_thermal_kw, phys_vars=None):
+    """
+    Maintains compatibility with tests/test_cascades.py and tests/test_realism_check.py
+    while applying physics-based remediation variables.
+    """
     controller = CHTSController()
+    
+    # Apply remediation physics if variables are provided
+    if phys_vars:
+        # Handle MHD stability failure
+        if phys_vars.get('mhd_ionization_stable') is False:
+            controller.efficiency_coefficients["mhd"] = 0.0
+        
+        # Apply performance adjustments
+        slip = phys_vars.get('slip_factor', 0.0)
+        flux_gain = phys_vars.get('halbach_flux_gain', 0.0)
+        
+        # Adjust MHD performance based on slip and flux
+        controller.efficiency_coefficients["mhd"] = (controller.efficiency_coefficients["mhd"] * (1 - slip)) + flux_gain
+
     result = controller.compute_cascaded_output(input_thermal_kw)
     return result["outputs"]
 
+# Global controller instance for system-wide access
 node_controller = CHTSController()
