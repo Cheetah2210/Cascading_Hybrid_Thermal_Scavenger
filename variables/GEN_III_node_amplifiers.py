@@ -16,7 +16,6 @@ class CHTSController:
         self.baseline_temps = {'T_hot': 500, 'T_cold': 300}
 
     def compute_optimized_output(self, input_thermal_kw, live_temps=None):
-        """Calculates energy recovery with input-deterministic modeling."""
         if input_thermal_kw > self.max_capacity:
             status = "SATURATED"
         elif input_thermal_kw < self.discharge_threshold:
@@ -38,8 +37,6 @@ class CHTSController:
             total_recovery += extracted
             current_heat -= extracted
             
-        # Input-Deterministic Stochastic Modeling
-        # Hashing the load ensures the same input always produces the same 'random' noise
         seed = int(hashlib.md5(str(input_thermal_kw).encode()).hexdigest(), 16) % (2**32)
         local_rng = np.random.default_rng(seed=seed)
         
