@@ -16,5 +16,4 @@
     "unaccounted_entropy_kw": 0.0
   },
   "validation_status": "CALORIMETRY_PENDING"
-  "$$Q_{in} = P_{net} + \dot{m}c_p\Delta T_{sink} + Q_{loss}$$"
 }
