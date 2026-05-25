@@ -28,6 +28,12 @@ This document outlines the primary deployment vectors for the Cascading Hybrid T
 * **Deployment:** Fluidic channel bypass loops that capture enthalpy without the need for mechanical contact with turbines.
 * **Benefit:** Sustainable energy extraction with near-zero maintenance, unaffected by mineral scaling or brine acidity.
 
+## 5. Space & Aerospace Thermal Bus Integration
+* **The Challenge:** Heat rejection in vacuum is limited by radiator surface area and weight, posing a major constraint on orbital compute power.
+* **CHTS Solution:** Integrated solid-state exergy recovery within the spacecraft's thermal bus.
+* **Deployment:** Replacing or supplementing passive cold-plates with MHD-active scavenger loops.
+* **Benefit:** Converts waste heat from mission-critical electronics into usable power, effectively increasing the spacecraft's "Energy Density per Kg" and reducing the necessary size of thermal radiator wings.
+
 ---
 
 ## Technical Scaling Reference
