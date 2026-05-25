@@ -1,7 +1,7 @@
-Metric,Theoretical_kW,Measured_kW,Variance_kW,Confidence_Percent
-Gross Thermal Input,100.0,100.0,0.0,100
-MHD Extraction,24.2,21.5,-2.7,88
-TEG Recovery,15.5,14.8,-0.7,95
-Zeo Cycle Recovery,7.1,6.5,-0.6,91
-Coolant Rejection,50.0,52.8,2.8,94
-Parasitic Ambient Loss,3.2,4.4,1.2,
+Metric,Theoretical (kW),Measured (kW),Variance (kW),Confidence (%)
+Gross Thermal Input,100.0,100.0,0.0,100%
+MHD Extraction,24.2,21.5,-2.7,88%
+TEG Recovery,15.5,14.8,-0.7,95%
+Zeo Cycle Recovery,7.1,6.5,-0.6,91%
+Coolant Rejection,50.0,52.8,+2.8,94%
+Parasitic/Ambient Loss,3.2,4.4,+1.2,72%
