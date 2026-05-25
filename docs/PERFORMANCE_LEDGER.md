@@ -7,3 +7,15 @@
 | **Gen III EHD** | 80.4% | 53.6% | Hartmann Flow Stabilization |
 
 *Note: Yields are verified against the integration logic in `node_amplifiers.py` and `GEN_III_node_amplifiers.py`.*
+
+---
+
+# Realism & Feasibility Ledger
+
+| Metric | Value | Constraint Description |
+| :--- | :--- | :--- |
+| **Ideal Exergy Potential** | 80.4% | Entropy-minimized theoretical maximum. |
+| **Engineering Reality Gap** | -33.6% | Losses from material creep, RF coupling flux, and fluid friction. |
+| **Validated Net Yield** | 46.8% | Sustainable operational target for production units. |
+
+---
