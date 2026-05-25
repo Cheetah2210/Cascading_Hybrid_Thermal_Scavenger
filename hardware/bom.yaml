@@ -1,37 +1,10 @@
-bill_of_materials:
-  - component_id: CHTS-MP-01
-    item_description: Graphene Interface Sheet
-    specification:
-      material: Oriented Layered Matrix
-      thermal_conductivity_W_mK: ">=3000"
-    quantity: 1
-    unit: ea
-    notes: Laser-cut to processing unit bracket spec
-
-  - component_id: CHTS-SS-02
-    item_description: Bismuth Telluride Arrays
-    specification:
-      chemistry: Bi2Te3
-      type: High-density solid-state micro-pellets
-    quantity: 4
-    unit: ea
-    notes: Integrated serial/parallel terminal wiring
-
-  - component_id: CHTS-CH-03
-    item_description: Structural 1U Manifold Frame
-    specification:
-      material: 6061-T6 CNC Aluminum
-      finish: Anodized
-    quantity: 1
-    unit: ea
-    notes: Open CAD blueprints included in /hardware
-
-  - component_id: CHTS-PC-04
-    item_description: Phase Change Material Plate
-    specification:
-      core: Organic Paraffin
-      melting_temperature_C: 42
-    quantity: 2
-    unit: ea
-    notes: ""
-
+components:
+  - name: High_Temp_TEG_Array
+    type: Solid-State
+    spec: 18.5_percent_efficiency
+  - name: Low_Temp_TEG_Array
+    type: Solid-State
+    spec: 14.0_percent_efficiency
+  - name: Zeotropic_Recovery_Heat_Exchanger
+    type: Mechanical
+    spec: 7.1_percent_recovery
