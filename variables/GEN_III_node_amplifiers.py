@@ -8,19 +8,15 @@ class CHTSController:
     - Serial Enthalpy Cascade: Each stage processes residual heat.
     - Operational States: OPTIMAL, SATURATED, DISCHARGING.
     - Uncertainty: Modeled stochastic noise and instrument variance.
-    
-    Usage:
-    compute_optimized_output(input_thermal_kw, live_temps=None)
     """
     def __init__(self, max_capacity=200.0, discharge_threshold=50.0):
         self.max_capacity = max_capacity
         self.discharge_threshold = discharge_threshold
-        # Baseline environment for non-HIL (simulation) modes
         self.baseline_temps = {'T_hot': 500, 'T_cold': 300}
 
     def compute_optimized_output(self, input_thermal_kw, live_temps=None):
         """Calculates energy recovery based on cascaded exergy extraction."""
-        # Determine operational state
+        # Operational State
         if input_thermal_kw > self.max_capacity:
             status = "SATURATED"
         elif input_thermal_kw < self.discharge_threshold:
@@ -48,7 +44,6 @@ class CHTSController:
             current_heat -= extracted
             
         # Statistical Modeling: Return float for analytics compatibility
-        # 2% instrument error + normal distribution thermal noise
         base_error = 0.02 * total_recovery
         stochastic_noise = np.random.normal(0, 0.3) 
         modeled_sigma = round(np.sqrt(base_error**2 + stochastic_noise**2), 3)
