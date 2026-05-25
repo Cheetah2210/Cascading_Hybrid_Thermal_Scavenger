@@ -24,4 +24,4 @@ def test_extreme_inputs():
     Ensures the system handles negative or zero flux gracefully.
     """
     with pytest.raises(ValueError):
-        get_realistic_exergy_yield(0.0, 1200.0, 300.0)
+        get_realistic_exergy_yield(0.0, 1200.0, 300.0) 
