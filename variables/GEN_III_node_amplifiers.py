@@ -1,6 +1,6 @@
 """
 GEN_III Node Amplifiers: Thermal Cascade Control Logic
-Optimized for 2026 CHTS Benchmarks
+Updated with Saturation Alerting
 """
 
 class CHTSController:
@@ -14,17 +14,15 @@ class CHTSController:
 
     def compute_cascaded_output(self, input_thermal_kw):
         """
-        Calculates energy distribution with automatic saturation bypass.
+        Calculates energy distribution with saturation bypass and status flagging.
         """
-        # Saturation Management
-        if input_thermal_kw > self.max_capacity:
-            effective_input = self.max_capacity
-            bypassed_heat = input_thermal_kw - self.max_capacity
-        else:
-            effective_input = input_thermal_kw
-            bypassed_heat = 0.0
+        # Determine operational state
+        is_saturated = input_thermal_kw > self.max_capacity
+        
+        effective_input = min(input_thermal_kw, self.max_capacity)
+        bypassed_heat = max(0.0, input_thermal_kw - self.max_capacity)
 
-        # Output calculation based on cascade coefficients
+        # Output calculation
         outputs = {
             "mhd": round(effective_input * self.efficiency_coefficients["mhd"], 3),
             "teg": round(effective_input * self.efficiency_coefficients["teg"], 3),
@@ -35,7 +33,8 @@ class CHTSController:
             "effective_input": effective_input,
             "outputs": outputs,
             "bypassed_heat": bypassed_heat,
-            "total_output": sum(outputs.values())
+            "total_output": sum(outputs.values()),
+            "status": "SATURATED" if is_saturated else "OPTIMAL"
         }
 
 # Instantiate controller for operational verification
