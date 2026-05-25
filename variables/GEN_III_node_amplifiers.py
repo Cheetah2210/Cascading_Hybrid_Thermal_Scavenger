@@ -1,7 +1,8 @@
-"""
-GEN_III Node Amplifiers: Thermal Cascade Control Logic
-Updated with Saturation Alerting and Legacy Compatibility
-"""
+import logging
+
+# Configure logger to capture saturation events
+logging.basicConfig(filename='system_alerts.log', level=logging.INFO, 
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 class CHTSController:
     def __init__(self, max_capacity=200.0):
@@ -13,10 +14,10 @@ class CHTSController:
         }
 
     def compute_cascaded_output(self, input_thermal_kw):
-        """
-        Calculates energy distribution with saturation bypass and status flagging.
-        """
         is_saturated = input_thermal_kw > self.max_capacity
+        
+        if is_saturated:
+            logging.warning(f"Saturation Alert: Input {input_thermal_kw}kW exceeds capacity!")
         
         effective_input = min(input_thermal_kw, self.max_capacity)
         bypassed_heat = max(0.0, input_thermal_kw - self.max_capacity)
@@ -35,14 +36,9 @@ class CHTSController:
             "status": "SATURATED" if is_saturated else "OPTIMAL"
         }
 
-# Wrapper function for legacy test compatibility
 def get_optimized_realistic_yield(input_thermal_kw):
-    """
-    Maintains compatibility with tests/test_cascades.py and tests/test_realism_check.py
-    """
     controller = CHTSController()
     result = controller.compute_cascaded_output(input_thermal_kw)
     return result["outputs"]
 
-# Global controller instance for system-wide access
 node_controller = CHTSController()
