@@ -5,6 +5,7 @@ def plot_performance_with_error(data, temps={'T_hot': 500, 'T_cold': 300}):
     """Plots recovery against an independent thermodynamic Carnot boundary."""
     carnot_efficiency = 1 - (temps['T_cold'] / temps['T_hot'])
     input_loads = np.array(data['input_kw'])
+    
     theoretical_carnot_limit = input_loads * carnot_efficiency
     
     plt.figure(figsize=(10, 6))
