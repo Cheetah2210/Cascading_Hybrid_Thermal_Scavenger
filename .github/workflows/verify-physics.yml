@@ -7,11 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        # v4 supports Node.js 24 environment
         uses: actions/checkout@v4
 
       - name: Set up Python 3.11
-        # v5 supports Node.js 24 environment
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -22,4 +20,7 @@ jobs:
           pip install pytest numpy
 
       - name: Run Physics Verification Tests
+        env:
+          # CRITICAL: Ensures 'variables' module is importable
+          PYTHONPATH: ${{ github.workspace }}
         run: pytest tests/
