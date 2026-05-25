@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 
-# Absolute package imports mapping directly to the root structure
+# Absolute imports matching your clean package structure
 from variables.variable_theory_testing import calculate_hartmann_drag, evaluate_rf_ionization_overhead
 
 def test_hartmann_drag_boundaries():
@@ -9,14 +9,13 @@ def test_hartmann_drag_boundaries():
     Validates that the Hartmann boundary-layer wall shear drag stays within
     the physics-constrained 2.1 kW ceiling under peak flow velocity.
     """
-    # Unit conversions to standard SI units (meters)
+    # Channel parameters matching design specs
     width = 0.040
     height = 0.002
     length = 0.150
     velocity = 45.0
     sigma = 1.2e4
     
-    # Execute the calculation node
     drag_results = calculate_hartmann_drag(
         w=width, h=height, L=length, u=velocity, sigma=sigma
     )
