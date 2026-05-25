@@ -1,32 +1,50 @@
-class ThermalBuffer:
+import logging
+from variables.GEN_III_thermal_buffer import ThermalBuffer
+
+class CHTSController:
     """
-    Manages the secondary thermal storage buffer for the GEN-III system.
-    Captures excess exergy during saturation periods.
+    Optimized Controller for the 4-Stage Thermal Cascade (CHTS GEN-III).
+    Incorporates dynamic load balancing and PCM thermal storage management.
     """
-    def __init__(self, capacity_kwh=500.0, melt_point_c=120.0):
-        self.capacity_kwh = capacity_kwh
-        self.melt_point_c = melt_point_c
-        self.current_charge = 0.0  # kWh
-
-    def update_charge(self, storage_potential_kw, dt_hours=1.0):
-        """
-        Updates the buffer charge based on excess heat capture.
-        """
-        energy_added = storage_potential_kw * dt_hours
-        self.current_charge = min(self.capacity_kwh, self.current_charge + energy_added)
-        return self.current_charge
-
-    def discharge(self, demand_kw, dt_hours=1.0):
-        """
-        Releases energy from the buffer to the system when input is below capacity.
-        """
-        energy_to_release = min(self.current_charge, demand_kw * dt_hours)
-        self.current_charge -= energy_to_release
-        return energy_to_release / dt_hours
-
-    def get_status(self):
-        return {
-            "charge_level_kwh": self.current_charge,
-            "charge_level_pct": (self.current_charge / self.capacity_kwh) * 100,
-            "ready_for_discharge": self.current_charge > 0
+    def __init__(self, max_capacity=200.0, buffer_capacity=500.0):
+        self.max_capacity = max_capacity
+        self.buffer = ThermalBuffer(capacity_kwh=buffer_capacity)
+        self.coefficients = {
+            "teg_high": 0.185,
+            "teg_low": 0.140,
+            "zeo": 0.071,
+            "ads": 0.050
         }
+
+    def compute_optimized_output(self, input_thermal_kw):
+        """
+        Processes input load, handles saturation via buffer routing, 
+        and calculates total system recovery.
+        """
+        # Determine saturation and potential for storage
+        excess_input = max(0.0, input_thermal_kw - self.max_capacity)
+        effective_input = min(input_thermal_kw, self.max_capacity)
+        
+        # Capture excess into storage buffer
+        if excess_input > 0:
+            self.buffer.update_charge(excess_input)
+        
+        # Calculate yield per stage based on effective input
+        outputs = {k: round(effective_input * v, 3) for k, v in self.coefficients.items()}
+        total_recovery = sum(outputs.values())
+        
+        # Efficiency index calculation
+        efficiency_index = round(total_recovery / input_thermal_kw, 4) if input_thermal_kw > 0 else 0
+        
+        return {
+            "outputs": outputs,
+            "total_recovery_kw": total_recovery,
+            "storage_potential_kw": excess_input,
+            "buffer_status": self.buffer.get_status(),
+            "efficiency_index": efficiency_index,
+            "status": "SATURATED" if excess_input > 0 else "OPTIMAL"
+        }
+
+def get_maximized_yield(input_thermal_kw):
+    controller = CHTSController()
+    return controller.compute_optimized_output(input_thermal_kw)
