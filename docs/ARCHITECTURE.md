@@ -136,3 +136,52 @@ The PCM subsystem acts as a supporting thermal management layer rather than a pr
 The CHTS architecture employs serial enthalpy depletion logic.
 
 Residual thermal potential is modeled as:
+
+Q_{residual,n} = Q_{input,n} - Q_{extracted,n}
+
+
+Where:
+
+- $Q_{input,n}$ represents thermal energy entering stage $n$
+- $Q_{extracted,n}$ represents stage extraction constrained by Carnot-limited thermodynamic bounds and modeled operating conditions
+- $Q_{residual,n}$ represents remaining thermal potential available to downstream stages
+
+This framework ensures that each stage receives only thermodynamically available residual heat.
+
+The model therefore avoids:
+
+- Parallel heat reuse assumptions
+- Exergy double-counting
+- Unrealistic aggregate recovery projections
+
+---
+
+# 5. Deterministic Uncertainty Modeling
+
+CHTS incorporates deterministic stochastic behavior to support reproducible performance modeling.
+
+The framework utilizes deterministic MD5-seeded stochastic variables to ensure reproducible performance projections across operating environments.
+
+This approach provides:
+
+- Repeatable modeled uncertainty
+- Stable controller behavior
+- Environment-independent reproducibility
+- Consistent validation outputs
+
+Modeled uncertainty remains deterministic and auditable.
+
+---
+
+# 6. System Provenance & Validation
+
+This architecture specification is enforced through the CHTS v1.0 validation pipeline.
+
+Core workflow:
+
+```text
+controller
+→ telemetry
+→ validation
+→ ledger
+→ analytics
