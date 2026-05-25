@@ -1,1 +1,19 @@
-
+{
+  "test_id": "CT-2026-001",
+  "input_parameters": {
+    "gross_thermal_input_kw": 100.0,
+    "coolant_mass_flow_kg_s": 0.5,
+    "inlet_temp_c": 25.0
+  },
+  "measured_outputs": {
+    "mhd_exergy_kw": 24.2,
+    "teg_electrical_kw": 15.5,
+    "zeotropic_recovery_kw": 7.1
+  },
+  "calorimetry_balance": {
+    "heat_rejected_to_sink_kw": 50.0,
+    "system_parasitic_loss_kw": 3.2,
+    "unaccounted_entropy_kw": 0.0
+  },
+  "validation_status": "CALORIMETRY_PENDING"
+}
