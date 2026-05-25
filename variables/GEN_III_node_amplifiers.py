@@ -1,46 +1,32 @@
-import logging
-
-class CHTSController:
+class ThermalBuffer:
     """
-    Optimized Controller for the 4-Stage Thermal Cascade (CHTS GEN-III).
-    Incorporates dynamic load balancing for peak thermal input.
+    Manages the secondary thermal storage buffer for the GEN-III system.
+    Captures excess exergy during saturation periods.
     """
-    def __init__(self, max_capacity=200.0):
-        self.max_capacity = max_capacity
-        # Baseline conversion efficiencies
-        self.coefficients = {
-            "teg_high": 0.185,
-            "teg_low": 0.140,
-            "zeo": 0.071,
-            "ads": 0.050
-        }
+    def __init__(self, capacity_kwh=500.0, melt_point_c=120.0):
+        self.capacity_kwh = capacity_kwh
+        self.melt_point_c = melt_point_c
+        self.current_charge = 0.0  # kWh
 
-    def compute_optimized_output(self, input_thermal_kw):
+    def update_charge(self, storage_potential_kw, dt_hours=1.0):
         """
-        Calculates recovery and captures excess exergy for thermal storage.
+        Updates the buffer charge based on excess heat capture.
         """
-        # Determine saturation status and storage potential
-        is_saturated = input_thermal_kw > self.max_capacity
-        effective_input = min(input_thermal_kw, self.max_capacity)
-        
-        # Calculate yield per stage
-        outputs = {k: round(effective_input * v, 3) for k, v in self.coefficients.items()}
-        total_recovery = sum(outputs.values())
-        
-        # Capture excess for secondary thermal storage (PCM/buffer)
-        storage_potential = max(0.0, input_thermal_kw - self.max_capacity)
-        
-        # Calculate performance index
-        efficiency_index = round(total_recovery / input_thermal_kw, 4) if input_thermal_kw > 0 else 0
-        
+        energy_added = storage_potential_kw * dt_hours
+        self.current_charge = min(self.capacity_kwh, self.current_charge + energy_added)
+        return self.current_charge
+
+    def discharge(self, demand_kw, dt_hours=1.0):
+        """
+        Releases energy from the buffer to the system when input is below capacity.
+        """
+        energy_to_release = min(self.current_charge, demand_kw * dt_hours)
+        self.current_charge -= energy_to_release
+        return energy_to_release / dt_hours
+
+    def get_status(self):
         return {
-            "outputs": outputs,
-            "total_recovery_kw": total_recovery,
-            "storage_potential_kw": storage_potential,
-            "efficiency_index": efficiency_index,
-            "status": "SATURATED" if is_saturated else "OPTIMAL"
+            "charge_level_kwh": self.current_charge,
+            "charge_level_pct": (self.current_charge / self.capacity_kwh) * 100,
+            "ready_for_discharge": self.current_charge > 0
         }
-
-def get_maximized_yield(input_thermal_kw):
-    controller = CHTSController()
-    return controller.compute_optimized_output(input_thermal_kw)
