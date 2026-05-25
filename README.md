@@ -35,6 +35,7 @@ The **Cascading Hybrid Thermal Scavenger (CHTS)** addresses the critical energy 
 ## 🚀 Global Impact & Applications
 The CHTS framework is engineered for global scalability, providing a pathway to decarbonize heat-intensive industries.
 
+* **Data Center Exergy Reclamation: Directly addressing the massive thermal exhaust from high-density server clusters. By retrofitting CHTS scavenger hoods, data center operators can reclaim significant exergy to offset cooling costs and auxiliary power consumption, transforming waste heat into a manageable electrical load.
 * **Industrial Decarbonization:** Retrofitting blast furnaces, glass kilns, and ceramic kilns to reclaim thermal waste, reducing energy overhead by an estimated 15-20% per unit.
 * **Distributed Grid Support:** Enabling micro-scale energy harvesting in remote regions where thermal transport infrastructure is non-existent, turning high-temperature waste into usable electrical load.
 * **Marine & Propulsion:** Integrating solid-state scavenger hoods into combustion propulsion systems to improve net fuel utilization and reduce thermal signatures.
