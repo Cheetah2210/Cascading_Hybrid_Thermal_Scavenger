@@ -5,7 +5,7 @@ A multi-stage, solid-state thermal recovery ecosystem designed to maximize exerg
 ---
 
 ## ⚖️ License
-Author: Emily 🌻 (Cheetahs Creations)  
+Author: 🌻 Emily 🌻 Cheetahs Creations
 Licensed under the [CERN Open Hardware Licence v1.2](./License.txt).
 
 ---
