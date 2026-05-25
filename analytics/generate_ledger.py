@@ -10,7 +10,7 @@ def generate_ledger(input_kw=200.0, output_path='validation/calorimetry_results.
     controller = CHTSController()
     result = controller.compute_optimized_output(input_kw)
     
-    # Dynamic UTC timestamping
+    # Dynamic UTC timestamping for forensic accuracy
     timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat()
     
     ledger = {
