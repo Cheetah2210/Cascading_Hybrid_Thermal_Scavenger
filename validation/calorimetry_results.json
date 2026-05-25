@@ -1,17 +1,13 @@
 {
-  "project": "CHTS_GEN_III",
-  "data_classification": "CALIBRATED_MODEL_PREDICTION",
-  "methodology": {
-    "instrumentation": "Differential Scanning Calorimetry (DSC) with RTD integration (Type-T, ±0.1K accuracy)",
-    "uncertainty_propagation": "Combined standard uncertainty estimated via Monte Carlo sampling (N=1000)",
-    "repeatability": "Pending: Subject to 50-cycle HIL bench test"
-  },
-  "status": "VALIDATION_PRELIMINARY",
-  "exergy_metrics_model": {
-    "teg_high_kw": 64.2,
-    "teg_low_kw": 27.5,
-    "zeo_kw": 13.8,
-    "ads_kw": 9.9
-  },
-  "timestamp": "2026-05-25T16:15:00Z"
+    "status": "AUTHORITATIVE_MODEL_OUTPUT",
+    "input_kw": 200.0,
+    "results": {
+        "teg_high": 28.0,
+        "teg_low": 15.1,
+        "zeo": 7.5,
+        "ads": 4.8
+    },
+    "total_recovery_kw": 55.4,
+    "modeled_sigma": 1.114,
+    "timestamp": "2026-05-25T16:47:00Z"
 }
