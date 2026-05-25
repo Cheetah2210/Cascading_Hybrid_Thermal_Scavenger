@@ -16,17 +16,16 @@ def run_sensitivity_analysis():
             "load_kw": load,
             "total_recovery": report["total_recovery_kw"],
             "status": report["status"],
-            "uncertainty": report["confidence_interval"]
+            "modeled_sigma": report["modeled_sigma"]
         })
     
     return pd.DataFrame(results)
 
 if __name__ == "__main__":
     df = run_sensitivity_analysis()
-    print("Sensitivity Analysis Results:")
+    print("Sensitivity Analysis Results (v3.14 Sync):")
     print(df)
     
-    # Check for consistency
     if df['total_recovery'].isnull().any():
-        raise ValueError("Sensitivity Analysis failed: Logic mismatch detected.")
-    print("Analysis complete. Architectural alignment verified.")
+        raise ValueError("Sensitivity Analysis failed: Key mismatch detected.")
+    print("Analysis complete. API alignment verified.")
