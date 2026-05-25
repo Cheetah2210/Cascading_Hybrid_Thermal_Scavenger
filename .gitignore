@@ -1,38 +1,18 @@
-# ==============================================================================
-# CHTS Repository Git Ignore Rules
-# ==============================================================================
-
-# Python Byte-compiled / optimized / DLL files
+# Python bytecode
 __pycache__/
 *.py[cod]
-*$py.class
 
-# Local Virtual Environments (Prevent pushing massive external binaries)
-.venv/
+# Virtual Environments
 venv/
-ENV/
 env/
-ActiveState.venv/
+.env
 
-# Python packaging and distribution build outputs
-build/
-dist/
-downloads/
-eggs/
-.eggs/
-*.egg-info/
-*.egg
-
-# Testing and Coverage
+# CI/CD & Testing
 .pytest_cache/
 .coverage
 htmlcov/
 *.log
 
-# IDEs, Editors, and OS-specific metadata
-.vscode/
-.idea/
-*.swp
-*.swo
+# Hardware/OS files
 .DS_Store
-Thumbs.db
+*.swp
