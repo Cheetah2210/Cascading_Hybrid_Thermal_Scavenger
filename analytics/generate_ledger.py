@@ -1,5 +1,11 @@
+import sys
+import os
 import json
 import datetime
+
+# Inject project root into path if run as a script
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from variables.GEN_III_node_amplifiers import CHTSController
 
 def generate_ledger(input_kw=200.0, output_path='validation/calorimetry_results.json'):
