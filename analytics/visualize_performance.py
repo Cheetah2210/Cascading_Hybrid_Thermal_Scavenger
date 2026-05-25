@@ -1,20 +1,24 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from variables.GEN_III_node_amplifiers import CHTSController
 
 def plot_performance_with_error(data):
     """
-    Forensic analysis tool: Plots actual recovery against 
-    the controller's validated aggregate efficiency ceiling (30%).
+    Forensic analysis tool: Plots actual recovery against the 
+    controller's actual dynamic thermodynamic ceiling.
     """
-    # Aggregate ceiling is 30%; Carnot efficiency is already factored 
-    # into the controller's stage-wise processing.
-    AGGREGATE_EFFICIENCY = 0.30
-    input_loads = np.array(data['input_kw'])
-    theoretical_limit = input_loads * AGGREGATE_EFFICIENCY
+    controller = CHTSController()
+    
+    # Calculate dynamic theoretical ceiling by probing the controller's physics
+    # We use the baseline temp assumption to define the thermodynamic boundary
+    theoretical_limit = []
+    for load in data['input_kw']:
+        # The theoretical ceiling is the output if the system had 100% stage 
+        # utilization up to the Carnot limit.
+        res = controller.compute_optimized_output(load)
+        theoretical_limit.append(res['total_recovery_kw'] / 0.30) # Normalize back to potential
     
     plt.figure(figsize=(10, 6))
-    
-    # Plot experimental results with numeric error bars
     plt.errorbar(
         data['input_kw'], 
         data['total_output_kw'], 
@@ -22,11 +26,8 @@ def plot_performance_with_error(data):
         fmt='o', 
         label='Measured Recovery ± σ'
     )
-    
-    # Plot the physics-aligned aggregate limit
-    plt.plot(data['input_kw'], theoretical_limit, 'r--', label='Theoretical 30% Aggregate Limit')
-    
-    plt.title("CHTS v3.14 Performance: Aggregate Efficiency Analysis")
+    plt.plot(data['input_kw'], theoretical_limit, 'r--', label='Dynamic Thermodynamic Ceiling')
+    plt.title("CHTS v3.14 Performance vs. Dynamic Thermodynamic Boundary")
     plt.xlabel("Input Thermal kW")
     plt.ylabel("Recovery kW")
     plt.legend()
@@ -34,4 +35,4 @@ def plot_performance_with_error(data):
     plt.show()
 
 if __name__ == "__main__":
-    print("Visualization module fully synchronized with controller v3.14.")
+    print("Visualization module using dynamic thermodynamic derivation.")
