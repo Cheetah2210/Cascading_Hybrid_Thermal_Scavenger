@@ -7,6 +7,10 @@ from .teg_sandwich import simulate_teg_core
 from .GEN_III_zeotropic_mix import calculate_zeotropic_glide
 
 def get_realistic_exergy_yield(gross_input_kw: float, t_hot: float, t_cold: float) -> dict:
+    # Guard Clause: Prevent ZeroDivisionError and invalid physical states
+    if gross_input_kw <= 0:
+        raise ValueError("Gross input power must be greater than zero.")
+        
     # 1. MHD Stage: Apply Hartmann Drag constraint
     hartmann_drag_kw = 2.1 
     mhd_gross = gross_input_kw * 0.536
