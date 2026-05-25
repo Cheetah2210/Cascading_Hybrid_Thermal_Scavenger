@@ -15,30 +15,25 @@ def get_optimized_realistic_yield(gross_input_kw: float, phys_vars: dict) -> dic
     - zt_coefficient (float): Seebeck figure of merit for Stage 2 TEGs
     """
     
-    # Baseline realistic net yield (46.8% of gross input)
+    # 1. Baseline realistic net yield (46.8% of gross input)
     base_net = gross_input_kw * 0.468
     
-    # 1. Calculate cumulative gain from physical remediation
-    # These factors represent the remediation of Hartmann drag and friction
+    # 2. Calculate cumulative gain from physical remediation
+    # Remediation of Hartmann drag and boundary friction
     total_gain = (phys_vars.get('slip_factor', 0.0) + 
                   phys_vars.get('ehd_freq_boost', 0.0) + 
                   phys_vars.get('halbach_flux_gain', 0.0))
     
-    # 2. TEG Efficiency Adjustment
-    # TEGs scale non-linearly with ZT values; using 1.0 as the base reference
-    teg_multiplier = (phys_vars.get('zt_coefficient', 1.0) / 1.0) 
+    # 3. Apply TEG efficiency coefficient
+    # ZT coefficient directly scales the recovered energy
+    teg_multiplier = phys_vars.get('zt_coefficient', 1.0)
     
-    # 3. Calculate Final Adjusted Output
-    # Applying the cumulative gain to the base net and adjusting for TEG performance
-    optimized_output = base_net * (1 + total_gain) * (teg_multiplier * 0.1)
+    # 4. Final Adjusted Output
+    # Result = (Baseline * Gain_Multiplier) * TEG_Efficiency
+    optimized_output = base_net * (1 + total_gain) * teg_multiplier
     
     return {
         "optimized_net_kw": round(optimized_output, 3),
         "efficiency_gain_delta": round(total_gain * 100, 2),
-        "zt_reference": phys_vars.get('zt_coefficient', 1.0),
         "status": "GRANULAR_MODEL_VALIDATED"
     }
-
-# Example usage for verification:
-# vars = {'slip_factor': 0.025, 'ehd_freq_boost': 0.042, 'halbach_flux_gain': 0.031, 'zt_coefficient': 2.5}
-# print(get_optimized_realistic_yield(10.0, vars))
