@@ -11,47 +11,47 @@ Licensed under the [CERN Open Hardware Licence v1.2](./License.txt).
 ---
 
 ## 📖 Project Overview
-The **Cascading Hybrid Thermal Scavenger (CHTS)** addresses energy inefficiencies in high-density computing and industrial management. CHTS utilizes a decoupled, multi-stage cascading framework to capture waste heat without parasitic mechanical load.
+The **Cascading Hybrid Thermal Scavenger (CHTS)** addresses energy inefficiencies in high-density computing and industrial management. CHTS utilizes a decoupled, 4-stage solid-state cascading framework to capture waste heat without parasitic mechanical load.
 
 ### The Innovation
-* **Primary Stage (MHD Core):** Uses an immiscible fluid mixture in a closed circuit, leveraging **Magnetohydrodynamics (MHD)** to generate DC power autonomously.
-* **Secondary Stage (Decoupled Retrofit):** A secondary refrigerant vapor loop captures residual heat, ensuring maximum total exergy extraction.
+* **Stages 1 & 2 (High/Low TEG):** Solid-state Seebeck conversion modules capturing high and low-grade heat.
+* **Stage 3 (Zeotropic Loop):** A binary fluid heat exchange loop capturing residual latent thermal energy.
+* **Stage 4 (Adsorption Cycle):** A silica-gel water desiccant cycle utilizing remaining exergy for active cooling offsets.
+* **Thermal Management:** Integrated Phase Change Material (PCM) buffer for dynamic load balancing.
 
 ---
 
 ## 📂 Repository Directory
 | Path | Description |
 | :--- | :--- |
-| [**.github/workflows/**](./.github/workflows/) | Validated CI/CD for Node.js 24/Python 3.11. |
-| [**docs/**](./docs/) | Scaling guides, Sizing math, and **Space Adaptation**. |
-| [**hardware/**](./hardware/) | CAD chassis, RF schematics, and material compliance. |
-| [**variables/**](./variables/) | Core 46.8% realistic exergy simulation engines. |
-| [**tests/**](./tests/) | Forensic thermodynamic unit tests. |
+| [**.github/workflows/**](./.github/workflows/) | Validated CI/CD for Python 3.11+ thermal verification. |
+| [**docs/**](./docs/) | Hardware interface, 44.6% efficiency math, and **Space Adaptation**. |
+| [**hardware/**](./hardware/) | BOM, Solid-state signal conditioning, and mechanical tolerances. |
+| [**variables/**](./variables/) | Controller logic and PCM Thermal Buffer management. |
+| [**tests/**](./tests/) | Forensic thermodynamic unit tests and validation suites. |
 
 ---
 
 ## 🚀 Global & Strategic Impact
-* **Data Center Exergy Reclamation:** Flagship application for AI compute clusters; reclaims exhaust to offset cooling costs and auxiliary load.
-* **Industrial Decarbonization:** Retrofitting blast furnaces and kilns; reducing energy overhead by 15-20%.
+* **Data Center Exergy Reclamation:** Reclaims exhaust heat to offset cooling infrastructure costs and auxiliary power loads.
+* **Industrial Decarbonization:** High-efficiency retrofitting for kilns and flues; reducing thermal overhead by 15-20%.
 * **Space & Aerospace:** Integrated thermal bus recovery for orbital compute, reducing the mass penalty of large radiator arrays.
-* **Distributed Grid Support:** Enabling micro-scale energy harvesting for remote infrastructure.
+* **Distributed Grid Support:** Enabling sustainable micro-scale energy harvesting for remote infrastructure.
 
 ---
 
-## 📊 Performance Matrix (Updated Multi-Stage Cascade)
+## 📊 Performance Matrix (Solid-State 4-Stage Cascade)
 
-| Phase Node | Ideal Limit | Realistic Net Yield | Governing Loss Factors |
+| Phase Node | Target Efficiency | Realistic Net Yield | Governing Loss Factors |
 | :--- | :--- | :--- | :--- |
-| **Stage 1: MHD** | 53.6% | **24.2%** | RF ionization overhead & Hartmann drag. |
-| **Stage 2: TEG** | 20.0% | **15.5%** | 0.15 mΩ contact resistance. |
-| **Stage 3: Zeotropic** | 12.0% | **7.1%** | Antoine pressure drops & boundary friction. |
-| **Stage 4: Adsorption** | 10.0% | **3.5% (Thermal Offset)** | Mass transfer resistance & bed thermal inertia. |
-| **Total System** | **95.6%** | **50.3%** | **Validated Net Exergy Yield** |
- 
+| **Stage 1 & 2: TEG** | 32.5% | **32.5%** | Semiconductor junction resistance. |
+| **Stage 3: Zeotropic** | 7.1% | **7.1%** | Pressure drops & boundary friction. |
+| **Stage 4: Adsorption** | 5.0% | **5.0% (Offset)** | Bed thermal inertia & mass transfer. |
+| **Total System** | **44.6%** | **44.6%** | **Validated Net Exergy Yield** |
 
 ---
 
 ## 🛠️ Implementation Requirements
-* [requirements.txt](./requirements.txt): Manifest for NumPy, SciPy, and test dependencies.
-* [setup.py](./setup.py): Local package configuration.
-* [docs/SPACE_ADAPTATION.md](./docs/SPACE_ADAPTATION.md): Vacuum-rated engineering guide.
+* [requirements.txt](./requirements.txt): Manifest for NumPy, SciPy, and automated validation tools.
+* [setup.py](./setup.py): Local production environment configuration.
+* [docs/SPACE_ADAPTATION.md](./docs/SPACE_ADAPTATION.md): Vacuum-rated engineering specifications for non-magnetic/solid-state thermal buses.
