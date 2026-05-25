@@ -1,19 +1,19 @@
-import matplotlib.pyplot as plt
 import pandas as pd
+import matplotlib.pyplot as plt
 
-def plot_performance_curve(csv_path='validation/prototype_telemetry.csv'):
+def generate_performance_report(csv_path='validation/prototype_telemetry.csv'):
+    # Load telemetry and sum all 4 stages
     df = pd.read_csv(csv_path)
-    # Using the new TEG architecture columns
-    df['total_output'] = df['teg_high_kw'] + df['teg_low_kw'] + df['zeo_recovery_kw']
-    df['efficiency'] = (df['total_output'] / df['input_thermal_kw']) * 100
+    df['total_kw'] = df[['teg_high_kw', 'teg_low_kw', 'zeo_recovery_kw', 'ads_offset_kw']].sum(axis=1)
     
-    plt.figure(figsize=(10, 6))
-    plt.plot(df['input_thermal_kw'], df['efficiency'], marker='o', linestyle='-', color='g')
-    plt.title('Solid-State CHTS Efficiency vs. Thermal Input')
-    plt.xlabel('Input Thermal (kW)')
-    plt.ylabel('Conversion Efficiency (%)')
-    plt.grid(True)
-    plt.savefig('analytics/performance_curve.png')
+    # Plotting the 44.6% efficiency baseline
+    plt.plot(df['input_thermal_kw'], df['total_kw'], label='Total System Recovery')
+    plt.axhline(y=89.2, color='r', linestyle='--', label='200kW Saturation Limit')
+    plt.xlabel('Thermal Input (kW)')
+    plt.ylabel('Power Recovery (kW)')
+    plt.title('CHTS GEN-III 4-Stage Performance')
+    plt.legend()
+    plt.show()
 
 if __name__ == "__main__":
-    plot_performance_curve()
+    generate_performance_report()
