@@ -1,5 +1,8 @@
 # Cascading Hybrid Thermal Scavenger (CHTS)
 
+![CHTS Architecture Framework](docs/CHTS_FLOW.png)
+
+
 CHTS is a deterministic and reproducible framework for modeling serial enthalpy cascade thermal recovery. This repository provides a reproducible and internally validated environment for simulating thermal scavenge performance, verifying telemetry against thermodynamic constraints, and auditing recovery metrics.
 
 > **Current Release:** CHTS v1.0
